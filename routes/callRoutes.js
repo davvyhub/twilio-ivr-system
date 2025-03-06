@@ -1,6 +1,5 @@
 const express = require('express');
-const { startCalling, handleCallResponse } = require('../controllers/callController');
-
+const { startCalling, voiceMenu, handleCallResponse } = require('../controllers/callController');
 const router = express.Router();
 
 // Start calling pending contacts
@@ -11,9 +10,6 @@ router.post('/voice-menu', voiceMenu);
 
 // Handle Twilio webhook response
 router.post('/response', handleCallResponse);
-
-// Start calls (only if no active call)
-router.post('/start', startCalling);
 
 // Webhook: Call ended
 router.post('/call-end', handleCallEnd);
