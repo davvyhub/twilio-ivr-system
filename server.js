@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const path = require('path');
 const { connectDB } = require('./config/db');
 const callRoutes = require('./routes/callRoutes');
 const contactRoutes = require('./routes/contactRoutes');
@@ -11,16 +12,30 @@ dotenv.config(); // Load environment variables
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Set view engine to EJS
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 // Middleware
-app.use(express.json()); // Parse JSON request bodies
-app.use(cors()); // Enable CORS
+app.use(express.json());
+app.use(cors());
+
+// Serve static files (CSS, images)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.use('/api/call', callRoutes);
 app.use('/api/contacts', contactRoutes);
 
-// Serve static files (for frontend)
-app.use(express.static('public'));
+// Home page (Dashboard for Upload & Calls)
+app.get('/', (req, res) => {
+    res.render('index');  // Renders views/index.ejs
+});
+
+// Call Logs Page
+app.get('/call-logs', (req, res) => {
+    res.render('callLogs');  // Renders views/callLogs.ejs
+});
 
 // Error handling middleware
 app.use(errorHandler);
