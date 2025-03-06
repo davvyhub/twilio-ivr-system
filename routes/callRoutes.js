@@ -1,5 +1,6 @@
 const express = require('express');
-const { startCalling, voiceMenu, handleCallResponse } = require('../controllers/callController');
+const { startCalling, voiceMenu, handleCallResponse, handleCallEnd } = require('../controllers/callController');
+const { handleConference } = require('../services/twilioService');
 const router = express.Router();
 
 // Start calling pending contacts
