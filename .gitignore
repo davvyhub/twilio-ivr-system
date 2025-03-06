@@ -1,0 +1,13 @@
+# Node.js dependencies
+node_modules/
+package-lock.json
+
+# Environment variables (DO NOT SHARE)
+.env
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+uploads/
