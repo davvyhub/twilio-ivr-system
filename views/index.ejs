@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Upload & Call Manager</title>
+    <link rel="stylesheet" href="/public/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Upload & Call Manager</h1>
+
+        <form action="/api/contacts/upload" method="POST" enctype="multipart/form-data">
+            <label for="file">Upload CSV/XLSX:</label>
+            <input type="file" name="file" id="file" required>
+            <button type="submit">Upload</button>
+        </form>
+
+        <button onclick="startCalls()">Start Calling Pending Contacts</button>
+
+        <h2>Contacts List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="contact-list"></tbody>
+        </table>
+
+        <a href="/call-logs">View Call Logs</a>
+    </div>
+
+    <script>
+        async function fetchContacts() {
+            const response = await fetch('/api/contacts');
+            const contacts = await response.json();
+            const tableBody = document.getElementById('contact-list');
+            tableBody.innerHTML = '';
+
+            contacts.forEach(contact => {
+                tableBody.innerHTML += `
+                    <tr>
+                        <td>${contact.name}</td>
+                        <td>${contact.phone_number}</td>
+                        <td>${contact.status}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function startCalls() {
+            await fetch('/api/call/start', { method: 'POST' });
+            alert('Calling started for pending contacts!');
+        }
+
+        fetchContacts();
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call Logs</title>
+    <link rel="stylesheet" href="/public/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Call Logs</h1>
+        <a href="/">Back to Dashboard</a>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Contact Name</th>
+                    <th>Phone Number</th>
+                    <th>Call Status</th>
+                    <th>Response</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody id="call-log-list"></tbody>
+        </table>
+    </div>
+
+    <script>
+        async function fetchCallLogs() {
+            const response = await fetch('/api/call/logs');
+            const logs = await response.json();
+            const tableBody = document.getElementById('call-log-list');
+            tableBody.innerHTML = '';
+
+            logs.forEach(log => {
+                tableBody.innerHTML += `
+                    <tr>
+                        <td>${log.contact.name}</td>
+                        <td>${log.contact.phone_number}</td>
+                        <td>${log.call_status}</td>
+                        <td>${log.response}</td>
+                        <td>${new Date(log.timestamp).toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        fetchCallLogs();
+    </script>
+</body>
+</html>
